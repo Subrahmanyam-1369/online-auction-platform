@@ -1,0 +1,80 @@
+# models/__init__.py
+# This file is intentionally left blank.
+
+# models/user.py
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from . import Base
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String(50), unique=True, nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    password_hash = Column(String(128), nullable=False)
+
+    bids = relationship('Bid', back_populates='user')
+
+# models/product.py
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy.orm import relationship
+from . import Base
+
+class Product(Base):
+    __tablename__ = 'products'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False)
+    description = Column(String(500))
+    starting_price = Column(Float, nullable=False)
+    category_id = Column(Integer, ForeignKey('categories.id'))
+
+    category = relationship('Category', back_populates='products')
+    auctions = relationship('Auction', back_populates='product')
+
+# models/auction.py
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
+from . import Base
+
+class Auction(Base):
+    __tablename__ = 'auctions'
+
+    id = Column(Integer, primary_key=True)
+    product_id = Column(Integer, ForeignKey('products.id'))
+    start_time = Column(DateTime, nullable=False)
+    end_time = Column(DateTime, nullable=False)
+    status = Column(String(20), default='active')
+
+    product = relationship('Product', back_populates='auctions')
+    bids = relationship('Bid', back_populates='auction')
+
+# models/bid.py
+from sqlalchemy import Column, Integer, Float, ForeignKey
+from sqlalchemy.orm import relationship
+from . import Base
+
+class Bid(Base):
+    __tablename__ = 'bids'
+
+    id = Column(Integer, primary_key=True)
+    auction_id = Column(Integer, ForeignKey('auctions.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    bid_amount = Column(Float, nullable=False)
+
+    auction = relationship('Auction', back_populates='bids')
+    user = relationship('User', back_populates='bids')
+
+# models/category.py
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from . import Base
+
+class Category(Base):
+    __tablename__ = 'categories'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), unique=True, nullable=False)
+
+    products = relationship('Product', back_populates='category')
