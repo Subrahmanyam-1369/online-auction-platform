@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Auction Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Glassmorphic effect */
+        .glassmorphic {
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+            backdrop-filter: blur(10px); /* Blur effect for the background */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+
+        /* Basic body and html setup */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Full viewport height */
+            overflow: hidden; /* Prevent scrolling on the body */
+            font-family: 'Inter', sans-serif; /* Using Inter font */
+        }
+
+        /* Body styling with background and layout */
+        body {
+            /*
+             * IMPORTANT: Using a placeholder background image.
+             * Replace with your actual image URL or ensure the relative path works in your setup.
+             * Placeholder: url('https://placehold.co/1920x1080/334155/ffffff?text=Auction+Background');
+             */
+            background-image: url('../assets/background-image.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px; /* Gap from browser window edges */
+            color: white; /* Default text color */
+        }
+
+        /* Main dashboard container - NOW FULLY GLASSMORPHIC */
+        .dashboard-container {
+            width: 100%;
+            height: calc(100vh - 120px); /* Full viewport height minus top/bottom padding */
+            border-radius: 20px; /* Rounded corners */
+            overflow: hidden; /* Clip content */
+            display: flex; /* Use flexbox for layout */
+            /* Apply glassmorphic styles directly */
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+            backdrop-filter: blur(10px); /* Blur effect for the background */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Soft shadow - Removed the white glow */
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px; /* Fixed width */
+            height: 100%;
+            /* Removed individual glassmorphic style - inherits transparency from parent */
+            /* background: rgba(255, 255, 255, 0.05); Slightly different background for visual separation */
+            border-right: 1px solid rgba(255, 255, 255, 0.2); /* Border to separate from main content */
+            padding: 1.5rem; /* Top and bottom padding */
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem; /* Reduced space between sidebar items */
+            overflow: hidden; /* Prevent scrolling in sidebar */
+            flex-shrink: 0; /* Prevent sidebar from shrinking */
+        }
+
+        /* Sidebar link styling */
+        .sidebar a {
+            flex-shrink: 0; /* Prevent sidebar items from shrinking */
+            transition: box-shadow 0.3s ease, border 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover effect */
+            border: 1px solid transparent; /* Start with transparent border to prevent layout shift */
+            border-radius: 0.5rem; /* Match rounded-lg */
+            padding: 0.75rem; /* Adjust padding within links if needed (Tailwind p-3 equivalent) */
+            display: flex; /* Ensure flex properties apply */
+            align-items: center; /* Align icon and text */
+            gap: 0.75rem; /* Space between icon and text (Tailwind gap-3) */
+            color: white; /* Ensure text is white */
+            text-decoration: none; /* Remove underline */
+        }
+
+        /* Sidebar link hover effect */
+        .sidebar a:hover {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* Subtle white glow on hover */
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Visible border with white glow on hover */
+            background-color: rgba(255, 255, 255, 0.1); /* Slight background change on hover */
+        }
+         /* Active sidebar link style */
+        .sidebar a.active {
+             background-color: rgba(255, 255, 255, 0.2); /* Slightly more prominent background */
+             box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Subtle glow for active item */
+             border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+
+        /* Main content area styling */
+        .main-content {
+            flex: 1; /* Take remaining space */
+            padding: 2rem;
+            overflow-y: auto; /* Allow scrolling within main content if needed */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Space between content blocks */
+            /* Removed individual glassmorphic style - inherits transparency from parent */
+        }
+
+        /* Ensure stats cards container and auctions table don't shrink */
+        .stats-cards, .auctions-table-container {
+            flex-shrink: 0;
+        }
+
+        /* Individual stat card and auctions table styling - Apply glassmorphic here */
+        .stats-card, .auctions-table {
+            transition: box-shadow 0.3s ease, border 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover effect */
+            border-radius: 0.75rem; /* Tailwind rounded-lg */
+            padding: 1.5rem; /* Tailwind p-6 */
+             /* Apply glassmorphic styles */
+            background: rgba(255, 255, 255, 0.15); /* Slightly less transparent than main container */
+            backdrop-filter: blur(5px); /* Less blur */
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hover effect specifically for individual stat cards */
+        .stats-card:hover {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* Subtle white glow on hover */
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Visible border with white glow on hover */
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly lighter on hover */
+        }
+
+        /* Hover effect specifically for the auctions table container */
+        .auctions-table:hover {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* Subtle white glow on hover */
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Visible border with white glow on hover */
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly lighter on hover */
+        }
+
+        /* Table specific styles */
+        .auctions-table table {
+            width: 100%;
+            text-align: left;
+            min-width: 600px; /* Ensure table has minimum width for readability */
+        }
+        .auctions-table th, .auctions-table td {
+            padding: 0.75rem 1rem; /* Tailwind py-3 px-4 */
+        }
+        .auctions-table thead tr {
+             border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* White border with opacity */
+        }
+         .auctions-table tbody tr {
+             border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Fainter border for rows */
+             transition: background-color 0.2s ease;
+         }
+         .auctions-table tbody tr:last-child {
+             border-bottom: none; /* No border for the last row */
+         }
+         .auctions-table tbody tr:hover {
+             background-color: rgba(255, 255, 255, 0.05); /* Subtle hover for table rows */
+         }
+         .auctions-table th {
+             font-weight: 600; /* Tailwind font-semibold */
+         }
+
+    </style>
+</head>
+<body> <div class="dashboard-container">
+        <div class="sidebar">
+            <h1 class="text-2xl font-bold mb-4 text-center flex-shrink-0">ONLINE AUCTION</h1>
+            <a href="#" class="active"> <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="#">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Price Predictions</span>
+            </a>
+             <a href="#">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                 <span>View Auctions</span>
+             </a>
+             <a href="#">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M3 9h18M3 15h18M3 21h18"/></svg>
+                 <span>Sell Products</span>
+             </a>
+             <a href="#">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                 <span>View Profile</span>
+             </a>
+             <a href="#">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18M9 20h6M9 4h6M12 4v16"/></svg>
+                 <span>Your Biddings</span>
+             </a>
+             <a href="#">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                 <span>Track Amount Spent</span>
+             </a>
+             <a href="#">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0c-1.657 0-3-.895-3-2s1.343-2 3-2m0 8c1.11 0 2.08-.402 2.599-1M12 16v1m-6-6H5m14 0h-1m-7 4H8m8 0h-1m-2-12V4m0 16v-1m6-13l.707-.707M6.293 6.293L7 7m10 10l.707.707M7 17l-.707.707M12 12a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                 <span>Pending Payments</span>
+             </a>
+        </div>
+
+        <div class="main-content">
+            <div class="flex justify-between items-center mb-6 flex-shrink-0">
+                <h2 class="text-3xl font-bold">Home</h2>
+                </div>
+
+            <div class="stats-cards grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="stats-card text-center"> <h3 class="text-lg font-semibold mb-2">Active Auctions</h3>
+                    <p class="text-4xl font-bold">12</p>
+                </div>
+                <div class="stats-card text-center"> <h3 class="text-lg font-semibold mb-2">Total Bidders</h3>
+                    <p class="text-4xl font-bold">5,480</p>
+                </div>
+                <div class="stats-card text-center"> <h3 class="text-lg font-semibold mb-2">Revenue This Month</h3>
+                    <p class="text-4xl font-bold">$2,350</p>
+                </div>
+            </div>
+
+            <div class="auctions-table"> <h3 class="text-xl font-semibold mb-4">Ongoing Auctions</h3>
+                <div class="overflow-x-auto auctions-table-container">
+                    <table> <thead>
+                            <tr> <th>Product</th> <th>Current Bid</th>
+                                <th>Bids</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr> <td>Smartphone</td> <td>$300</td>
+                                <td>15</td>
+                                <td>April 25, 2025</td>
+                            </tr>
+                            <tr> <td>Wireless Earbuds</td>
+                                <td>$75</td>
+                                <td>8</td>
+                                <td>April 26, 2025</td>
+                            </tr>
+                            <tr> <td>Digital Camera</td>
+                                <td>$510</td>
+                                <td>22</td>
+                                <td>April 27, 2025</td>
+                            </tr>
+                            <tr> <td>Smart Watch</td>
+                                <td>$120</td>
+                                <td>12</td>
+                                <td>April 28, 2025</td>
+                            </tr>
+                             <tr> <td>Vintage Vase</td>
+                                 <td>$220</td>
+                                 <td>18</td>
+                                 <td>April 29, 2025</td>
+                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple script to handle active link state
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+        const mainContentTitle = document.querySelector('.main-content h2'); // Cache title element
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Prevent default anchor behavior if you plan to load content dynamically
+                // e.preventDefault();
+
+                // Remove active class from all links
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+
+                // Add active class to the clicked link
+                link.classList.add('active');
+
+                // Update the main content title based on the clicked link's text
+                const linkTextElement = link.querySelector('span') || link;
+                const sectionTitle = linkTextElement.textContent.trim();
+                if (mainContentTitle) {
+                    mainContentTitle.textContent = sectionTitle;
+                }
+
+                // Placeholder for future content loading logic
+                // console.log(`Load content for: ${sectionTitle}`);
+                // You would typically fetch data or show/hide content sections here
+            });
+        });
+
+         // Set initial active link and title based on the 'active' class in HTML
+         const initialActiveLink = document.querySelector('.sidebar a.active');
+         if (initialActiveLink && mainContentTitle) {
+              const linkTextElement = initialActiveLink.querySelector('span') || initialActiveLink;
+              const sectionTitle = linkTextElement.textContent.trim();
+              mainContentTitle.textContent = sectionTitle;
+         }
+
+    </script>
+</body>
+</html>

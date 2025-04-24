@@ -4,73 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Online Auction Platform</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Glassmorphism effect */
+        /* Glassmorphism effect for the form container */
+        /* Applied styles similar to .stats-card from user-dashboard.html */
         .glass {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15); /* Semi-transparent white background */
+            backdrop-filter: blur(5px);          /* Blur effect for the background */
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Subtle border */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            border-radius: 1rem; /* Tailwind rounded-2xl equivalent */
         }
-        /* Custom input focus styles */
-        input:focus {
-            outline: none;
-            outline: 2px solid #3b82f6;
-            box-shadow: 0 0 0 2px #3b82f6;
-        }
-        /* Blur only the background image, not the form */
+
+        /* Custom input focus styles using Tailwind's approach */
+        /* These are applied via classes directly on the input elements */
+        /* Example: focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 */
+
+        /* Style to blur only the background image, not the form */
         body::before {
             content: "";
-            position: fixed;
-            inset: 0;
-            z-index: 0;
+            position: fixed; /* Cover the entire viewport */
+            inset: 0; /* Equivalent to top: 0; right: 0; bottom: 0; left: 0; */
+            z-index: 0; /* Place it behind the content */
+            /* Inherit background properties from body */
             background: inherit;
-            background-image: url('../assets/background-image.png');
-            background-size: cover;
-            background-position: center;
+            /* Apply blur and brightness adjustments */
             filter: blur(3px) brightness(0.75);
+            /* Prevent interaction with the pseudo-element */
             pointer-events: none;
         }
+
+        /* Ensure direct children of body are layered above the blurred background */
         body > * {
-            position: relative;
-            z-index: 1;
+            position: relative; /* Position relative to allow z-index */
+            z-index: 1; /* Stack above the ::before pseudo-element */
+        }
+
+        /* Basic body setup */
+        body {
+            min-height: 100vh; /* Ensure body takes at least full viewport height */
+            display: flex;
+            align-items: center; /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+            background-size: cover; /* Cover the entire area */
+            background-position: center; /* Center the background image */
+            background-attachment: fixed; /* Keep background fixed during scroll (if any) */
+            font-family: 'Inter', sans-serif; /* Added Inter font */
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('background-image.png');">
-    <div class="glass p-8 rounded-2xl shadow-lg w-full max-w-md">
+<body style="background-image: url('../assets/background-image.png');">
+    <div class="glass p-8 w-full max-w-md">
         <h2 class="text-3xl font-bold text-white text-center mb-6">Create Your Account</h2>
         <form id="registerForm" class="space-y-6">
-            <!-- Full Name -->
             <div>
                 <label for="fullName" class="block text-sm font-medium text-gray-200">Full Name</label>
                 <input type="text" id="fullName" name="fullName" required
-                       class="mt-1 w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+                       class="mt-1 w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                        placeholder="John Doe">
             </div>
-            <!-- Email -->
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-200">Email</label>
                 <input type="email" id="email" name="email" required
-                       class="mt-1 w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+                       class="mt-1 w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                        placeholder="you@example.com">
             </div>
-            <!-- Password -->
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-200">Password</label>
                 <input type="password" id="password" name="password" required
-                       class="mt-1 w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+                       class="mt-1 w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                        placeholder="••••••••">
             </div>
-            <!-- Confirm Password -->
             <div>
                 <label for="confirmPassword" class="block text-sm font-medium text-gray-200">Confirm Password</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" required
-                       class="mt-1 w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+                       class="mt-1 w-full px-4 py-2 bg-transparent border border-gray-300 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                        placeholder="••••••••">
             </div>
-            <!-- Submit Button -->
             <div>
                 <button type="submit"
                         class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300">
@@ -78,33 +88,75 @@
                 </button>
             </div>
         </form>
-        <!-- Sign In Link -->
         <p class="mt-6 text-center text-sm text-gray-300">
             Already have an account?
-            <a href="/pages/login.html" class="text-blue-400 hover:text-blue-500 font-medium">Sign in</a>
+            <a href="./Login.html" class="text-blue-400 hover:text-blue-500 font-medium">Sign in</a>
         </p>
     </div>
 
     <script>
+        // Add event listener to the form for the submit event
         document.getElementById('registerForm').addEventListener('submit', function (e) {
+            // Prevent the default form submission behavior (which would cause a page reload)
             e.preventDefault();
-            
+
+            // Get values from the form fields
             const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Basic validation
+            // Basic client-side validation: check if passwords match
             if (password !== confirmPassword) {
+                // Use a more user-friendly notification method in a real app
                 alert('Passwords do not match!');
-                return;
+                return; // Stop the function execution if passwords don't match
             }
 
-            // Mock API call (replace with actual backend endpoint)
-            console.log('Registering:', { fullName, email, password });
-            alert('Registration successful! (Mock response)');
+            // Prepare the data to be sent to the backend
+            const registrationData = {
+                fullName: fullName,
+                email: email,
+                password: password // Send the plain password (HTTPS is crucial)
+                // The backend should hash this password before storing
+            };
 
-            // Reset form
+            // --- Mock API Call Placeholder ---
+            // In a real application, you would send this data to your backend API endpoint
+            console.log('Registering:', registrationData);
+            // Example using fetch API (replace with your actual API endpoint and logic)
+            /*
+            fetch('/api/register', { // Replace with your actual registration API endpoint
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(registrationData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Handle errors (e.g., email already exists)
+                    return response.json().then(err => { throw new Error(err.message || 'Registration failed') });
+                }
+                return response.json(); // Assuming backend sends back user info or success message
+            })
+            .then(data => {
+                console.log('Registration successful:', data);
+                alert('Registration successful!');
+                // Optionally redirect to login page or dashboard
+                window.location.href = './Login.html'; // Redirect after successful registration
+                // this.reset(); // Clear the form fields
+            })
+            .catch((error) => {
+                console.error('Registration error:', error);
+                alert('Registration failed: ' + error.message);
+            });
+            */
+
+            // Using alert for mock feedback
+            alert('Registration successful! (Mock response - check console for data)');
+
+            // Reset the form fields after mock submission
             this.reset();
         });
     </script>
