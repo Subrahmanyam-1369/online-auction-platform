@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Auction Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Glassmorphic effect */
+        .glassmorphic {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Basic body and html setup */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Body styling */
+        body {
+            background-image: url('../assets/background-image.png'); /* Ensure path is correct */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: white;
+        }
+
+        /* Main dashboard container */
+        .dashboard-container {
+            width: 100%;
+            height: calc(100vh - 120px);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        /* Sidebar link styling */
+        .sidebar a {
+            flex-shrink: 0;
+            transition: box-shadow 0.3s ease, border 0.3s ease, background-color 0.3s ease;
+            border: 1px solid transparent;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        /* Sidebar link hover/active styles */
+        .sidebar a:hover {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        /* Active class will only apply to dynamically loaded links now */
+        .sidebar a.active {
+             background-color: rgba(255, 255, 255, 0.2);
+             box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+             border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* Sidebar Section Title */
+        .sidebar-section-title {
+            padding: 0.75rem 0.75rem 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+        }
+        .sidebar-section-title:first-of-type { margin-top: 0; }
+        .sidebar-sublink { padding-left: 2.25rem; }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container for dynamically loaded content */
+        #content-sections {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ensure loaded content sections fill the container */
+         #content-sections > div {
+             flex-grow: 1;
+             display: flex;
+             flex-direction: column;
+             gap: 1.5rem;
+         }
+
+        /* --- Styles for elements loaded dynamically --- */
+        .stats-card {
+            transition: box-shadow 0.3s ease, border 0.3s ease, background-color 0.3s ease;
+            border-radius: 0.75rem; padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center; flex-shrink: 0;
+        }
+        .stats-card:hover {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .stats-cards {
+             grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1.5rem;
+             margin-bottom: 1.5rem; flex-shrink: 0; display: grid; /* Added display grid */
+         }
+         @media (min-width: 768px) { .stats-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+        .auctions-table {
+            transition: box-shadow 0.3s ease, border 0.3s ease, background-color 0.3s ease;
+            border-radius: 0.75rem; padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+        .auctions-table:hover {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .auctions-table table { width: 100%; text-align: left; min-width: 600px; }
+        .auctions-table th, .auctions-table td { padding: 0.75rem 1rem; }
+        .auctions-table thead tr { border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+        .auctions-table tbody tr { border-bottom: 1px solid rgba(255, 255, 255, 0.1); transition: background-color 0.2s ease; }
+        .auctions-table tbody tr:last-child { border-bottom: none; }
+        .auctions-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.05); }
+        .auctions-table th { font-weight: 600; }
+        .auctions-table-container { overflow-x: auto; flex-shrink: 0; }
+         /* --- End of styles for dynamic elements --- */
+
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h1 class="text-xl font-bold mb-4 text-center flex-shrink-0">USER DASHBOARD</h1>
+
+            <a data-content-id="home" class="active">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span>Home</span>
+            </a>
+
+            <div class="sidebar-section-title">Enter Auction</div>
+            <a href="./mortgage-page.html" class="sidebar-sublink"> <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span>Mortgage Auctions</span>
+            </a>
+            <a data-content-id="product-auctions" class="sidebar-sublink">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                 <span>Product Auctions</span>
+            </a>
+
+            <div class="sidebar-section-title">Sell Products</div>
+             <a data-content-id="price-predictions" class="sidebar-sublink">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Price Predictions</span>
+             </a>
+             <a data-content-id="enter-product-details" class="sidebar-sublink">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"></path></svg>
+                 <span>Enter Product Details</span>
+             </a>
+             <a data-content-id="view-your-products" class="sidebar-sublink">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                 <span>View Your Products</span>
+             </a>
+
+            <div class="sidebar-section-title">View Profile</div>
+            <a data-content-id="update-profile" class="sidebar-sublink">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                <span>Update Profile</span>
+            </a>
+             <a data-content-id="profile-details" class="sidebar-sublink">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                 <span>Profile Details</span>
+             </a>
+             <a data-content-id="your-biddings" class="sidebar-sublink">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18M9 20h6M9 4h6M12 4v16"/></svg>
+                 <span>Your Biddings</span>
+             </a>
+             <a data-content-id="your-sold-products" class="sidebar-sublink">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                 <span>Your Sold Products</span>
+             </a>
+             <a data-content-id="your-earnings" class="sidebar-sublink">
+                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                 <span>Your Earnings</span>
+             </a>
+        </div>
+
+        <div class="main-content">
+            <div class="flex justify-between items-center mb-6 flex-shrink-0">
+                <h2 class="text-3xl font-bold" id="main-content-title">Home</h2>
+            </div>
+
+            <div id="content-sections" class="flex-grow">
+                <div id="loading-indicator" class="text-center p-10" style="display: none;">Loading...</div>
+            </div>
+        </div> </div> <script>
+        // Get references to elements
+        const sidebarLinks = document.querySelectorAll('.sidebar a'); // Select all links now
+        const mainContentTitle = document.getElementById('main-content-title');
+        const contentSectionsContainer = document.getElementById('content-sections');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        // Function to load and display content dynamically
+        async function loadContent(contentId) {
+            // Show loading indicator and clear previous content
+            loadingIndicator.style.display = 'block';
+            contentSectionsContainer.innerHTML = '';
+            contentSectionsContainer.appendChild(loadingIndicator);
+
+            // Construct the path to the partial HTML file
+            // Assumes content files are named like 'home.html', 'product-auctions.html' etc.
+            // in the same directory
+            const filePath = `./${contentId}.html`; // Example: ./home.html or ./product-auctions.html
+                                                    // Using the contentId directly as the filename base
+
+            try {
+                const response = await fetch(filePath);
+                loadingIndicator.style.display = 'none'; // Hide loading indicator
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const htmlContent = await response.text();
+                contentSectionsContainer.innerHTML = htmlContent;
+
+            } catch (error) {
+                console.error('Error loading content:', error);
+                contentSectionsContainer.innerHTML = `
+                    <div class="text-center text-red-400 p-10">
+                        <p>Error loading content for "${contentId}". Please check if the file '${filePath}' exists.</p>
+                        <p class="text-sm text-gray-500">${error.message}</p>
+                    </div>`;
+            } finally {
+                 updateTitle(contentId);
+                 updateActiveLink(contentId);
+            }
+        }
+
+        // Function to update the main title
+        function updateTitle(contentId) {
+             const activeLink = document.querySelector(`.sidebar a[data-content-id="${contentId}"]`);
+             if (mainContentTitle && activeLink) {
+                  const linkTextElement = activeLink.querySelector('span');
+                  const sectionTitle = linkTextElement ? linkTextElement.textContent.trim() : 'Dashboard';
+                  mainContentTitle.textContent = sectionTitle;
+             } else if (mainContentTitle) {
+                 // Attempt to find title from non-data-id link if needed, or default
+                 const currentLink = document.querySelector(`.sidebar a[href$="${contentId}.html"]`) || document.querySelector('.sidebar a.active');
+                 const linkTextElement = currentLink ? currentLink.querySelector('span') : null;
+                 mainContentTitle.textContent = linkTextElement ? linkTextElement.textContent.trim() : 'Dashboard';
+             }
+        }
+
+        // Function to update the active link in the sidebar
+        function updateActiveLink(contentId) {
+             sidebarLinks.forEach(link => {
+                 link.classList.remove('active');
+                 // Add active class only if it's a dynamic link matching the contentId
+                 if (link.getAttribute('data-content-id') === contentId) {
+                     link.classList.add('active');
+                 }
+             });
+        }
+
+        // Add click event listeners to sidebar links
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const contentId = link.getAttribute('data-content-id');
+                const href = link.getAttribute('href');
+
+                // If it has a data-content-id, handle dynamic loading
+                if (contentId) {
+                    e.preventDefault(); // Prevent default link behavior ONLY for dynamic links
+                    // Check if the clicked link is already active to prevent unnecessary reloads
+                    if (!link.classList.contains('active')) {
+                         loadContent(contentId);
+                    }
+                }
+                // If it has an href that is NOT just "#" or empty, let the browser navigate normally
+                else if (href && href !== '#') {
+                    // No preventDefault() here, allow standard link navigation
+                    // Optionally, you could remove the active class from other links here
+                    // sidebarLinks.forEach(l => l.classList.remove('active'));
+                }
+                 // If it's just an anchor without href or href="#", do nothing (or prevent default)
+                 else {
+                     e.preventDefault();
+                 }
+            });
+        });
+
+         // Initial content load when the page is ready
+         document.addEventListener('DOMContentLoaded', () => {
+             // Find the link marked as active initially (should be the dynamic 'home' link)
+             const initialActiveLink = document.querySelector('.sidebar a.active[data-content-id]');
+             const initialContentId = initialActiveLink ? initialActiveLink.getAttribute('data-content-id') : 'home'; // Default to home if none active
+             // Load the initial dynamic content
+             loadContent(initialContentId);
+         });
+
+    </script>
+</body>
+</html>
