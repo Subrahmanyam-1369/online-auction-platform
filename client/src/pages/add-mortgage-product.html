@@ -1,0 +1,35 @@
+<div id="add-mortgage-product-container" class="flex flex-col h-full text-white font-inter relative">
+    <!-- Header -->
+    <div class="pt-8 pb-4 px-6">
+        <h3 class="text-3xl font-bold text-white drop-shadow-lg">Add Mortgage Product</h3>
+        <p class="text-lg text-blue-50 opacity-90 mt-1">List a new mortgage product for auction. Fill in the property details below.</p>
+    </div>
+    <!-- Add Mortgage Product Form -->
+    <form class="max-w-2xl mx-auto bg-white/10 glassmorphic rounded-2xl shadow-xl p-8 flex flex-col gap-6 border border-white/20">
+        <div>
+            <label for="propertyAddress" class="block text-sm font-medium text-gray-200 mb-2">Property Address</label>
+            <input type="text" id="propertyAddress" name="propertyAddress" required class="w-full px-4 py-2 rounded-lg bg-gray-900 text-white placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" placeholder="Enter property address">
+        </div>
+        <div>
+            <label for="mortgageValue" class="block text-sm font-medium text-gray-200 mb-2">Mortgage Value ($)</label>
+            <input type="number" id="mortgageValue" name="mortgageValue" required min="0" step="0.01" class="w-full px-4 py-2 rounded-lg bg-gray-900 text-white placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" placeholder="Enter mortgage value">
+        </div>
+        <div>
+            <label for="foreclosureDate" class="block text-sm font-medium text-gray-200 mb-2">Foreclosure Date</label>
+            <input type="date" id="foreclosureDate" name="foreclosureDate" required class="w-full px-4 py-2 rounded-lg bg-gray-900 text-white placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
+        </div>
+        <div>
+            <label for="description" class="block text-sm font-medium text-gray-200 mb-2">Description</label>
+            <textarea id="description" name="description" rows="3" required class="w-full px-4 py-2 rounded-lg bg-gray-900 text-white placeholder-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" placeholder="Describe the property and mortgage"></textarea>
+        </div>
+        <div>
+            <label for="image" class="block text-sm font-medium text-gray-200 mb-2">Upload Image</label>
+            <input type="file" id="image" name="image" accept="image/*" class="w-full text-gray-200">
+        </div>
+        <button type="submit" class="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-500 text-white font-bold shadow-lg hover:scale-105 transition-transform duration-200">Add Mortgage Product</button>
+    </form>
+</div>
+<!--
+  Note: For a real app, JS would be added to handle form submission and validation.
+  The above is a static template for demonstration, ready for integration.
+-->

@@ -1,0 +1,279 @@
+<div id="product-auctions-container" class="flex flex-col h-full text-white font-inter relative"> 
+    <!-- Enhanced Product Auctions Header -->
+    <div class="sticky top-0 z-20 pt-6 pb-4 -mt-2 bg-gradient-to-r from-cyan-500/60 to-purple-400/60 backdrop-blur-md shadow-xl rounded-b-2xl flex flex-col md:flex-row md:items-center md:justify-between px-6">
+        <div>
+            <h3 class="text-3xl font-bold text-white drop-shadow-lg">Live Product Auctions</h3>
+            <p class="text-lg text-cyan-50 opacity-90 mt-1">Bid on the hottest gadgets and deals, updated in real-time!</p>
+        </div>
+        <button class="mt-4 md:mt-0 px-6 py-2 rounded-lg bg-gradient-to-r from-pink-500 to-violet-500 text-white font-bold shadow-lg hover:scale-105 transition-transform duration-200">
+            <svg class="inline w-6 h-6 mr-2 -mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Start Selling
+        </button>
+    </div>
+    <!-- Enhanced Product Grid -->
+    <div id="auction-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 py-8 px-4">
+        <!-- Example Product Card (repeat for each product) -->
+        <div class="relative bg-white/10 glassmorphic rounded-2xl shadow-xl p-6 flex flex-col hover:scale-105 transition-transform duration-200 border border-white/20 group">
+            <span class="absolute top-4 left-4 bg-gradient-to-r from-pink-400 to-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">New</span>
+            <img src="https://placehold.co/200x200/7DD3FC/FFFFFF?text=Phone" alt="Smartphone" class="w-36 h-36 mx-auto rounded-xl object-cover border-4 border-cyan-300 shadow-lg mb-4 group-hover:border-pink-400">
+            <h4 class="text-xl font-bold text-white text-center mb-2">Smartphone X1</h4>
+            <p class="text-gray-200 text-center mb-2">AI camera, 128GB, OLED, pristine condition.</p>
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-cyan-200 text-lg font-semibold">$325</span>
+                <span class="text-xs text-gray-300">Ends in <span class="font-semibold">02:15:20</span></span>
+            </div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=7DD3FC&color=fff&rounded=true" alt="Bidder" class="w-8 h-8 rounded-full border-2 border-white shadow">
+                    <span class="text-xs text-gray-200">Jane D.</span>
+                </div>
+                <button class="bid-btn bg-gradient-to-r from-green-400 to-cyan-500 hover:from-green-500 hover:to-cyan-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg flex items-center gap-2 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Bid Now
+                </button>
+            </div>
+        </div>
+        <!-- Repeat similar cards for each auction product, using your backend data -->
+    </div>
+    <div id="product-detail-view" class="hidden flex-col h-full">
+        <div class="mb-4 flex-shrink-0">
+             <button id="back-to-list-btn" class="text-sm bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 flex items-center gap-2 shadow hover:shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                Back to List
+             </button>
+        </div>
+        <div class="glassmorphic p-6 rounded-lg flex-grow flex flex-col md:flex-row gap-6 overflow-y-auto">
+            <div class="flex-shrink-0 md:w-1/3 flex flex-col items-center pt-4">
+                <img id="detail-img" src="https://placehold.co/250x250/cccccc/FFFFFF?text=Product" alt="Product Image" class="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-cyan-400 shadow-lg mb-4">
+            </div>
+            <div class="flex-grow md:w-2/3 space-y-4">
+                <h3 id="detail-name" class="text-3xl font-bold text-white">Product Name</h3>
+                <p id="detail-description" class="text-gray-200 leading-relaxed">Product description goes here...</p>
+                <div class="text-sm text-gray-300 border-t border-white/10 pt-3">
+                    <span class="font-semibold text-gray-100">Condition:</span> <span id="detail-used-time">Used for: X months</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center pt-2">
+                     <div class="glassmorphic p-4 rounded-lg shadow">
+                         <p class="text-sm text-gray-300 mb-1">Starting Price</p>
+                         <p id="detail-start-price" class="text-xl font-semibold text-white">$0.00</p>
+                     </div>
+                     <div class="glassmorphic p-4 rounded-lg border-2 border-cyan-400 shadow-lg">
+                         <p class="text-sm text-gray-300 mb-1">Current Bid</p>
+                         <p id="detail-current-price" class="text-2xl font-bold text-cyan-300">$0.00</p>
+                     </div>
+                </div>
+                <div class="pt-4 border-t border-white/10">
+                     <label for="bidAmountDetail" class="block text-sm font-medium text-gray-200 mb-2">Place Your Bid:</label>
+                     <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="number" id="bidAmountDetail" name="bidAmountDetail" placeholder="Enter amount ($)" min="0" step="0.01" class="flex-grow px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none transition duration-200">
+                        <button class="bid-btn-detail bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 shadow hover:shadow-md flex-shrink-0">Place Bid</button>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bid-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300 ease-in-out opacity-0">
+        <div class="glassmorphic rounded-xl shadow-2xl p-6 w-full max-w-sm border border-white/20">
+            <h3 class="text-xl font-semibold mb-2 text-white">Place Your Bid</h3>
+            <p class="text-sm text-gray-300 mb-4">Product: <span id="modal-product-name" class="font-medium">Product Name</span></p>
+            <p class="text-sm text-gray-300 mb-1">Current Bid: <span id="modal-current-bid" class="font-medium">$0.00</span></p>
+
+            <label for="modal-bid-amount" class="block text-sm font-medium text-gray-200 mt-4 mb-1">Enter amount ($):</label>
+            <input type="number" id="modal-bid-amount" name="modal-bid-amount" placeholder="Your bid must be higher" min="0" step="0.01" class="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none transition duration-200">
+            <input type="hidden" id="modal-product-id">
+
+            <div class="flex justify-end gap-3 mt-6">
+                <button id="modal-cancel-btn" class="text-sm bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg transition duration-200 shadow hover:shadow-md">Cancel</button>
+                <button id="modal-submit-bid-btn" class="text-sm bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-5 rounded-lg transition duration-200 shadow hover:shadow-md">Bid</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function() {
+    const productAuctionsContainer = document.getElementById('product-auctions-container');
+    if (!productAuctionsContainer) return;
+
+    const listView = productAuctionsContainer.querySelector('#product-list-view');
+    const detailView = productAuctionsContainer.querySelector('#product-detail-view');
+    const backButton = productAuctionsContainer.querySelector('#back-to-list-btn');
+    const auctionList = productAuctionsContainer.querySelector('#auction-list');
+
+    // Detail view elements
+    const detailImg = productAuctionsContainer.querySelector('#detail-img');
+    const detailName = productAuctionsContainer.querySelector('#detail-name');
+    const detailDescription = productAuctionsContainer.querySelector('#detail-description');
+    const detailUsedTime = productAuctionsContainer.querySelector('#detail-used-time');
+    const detailStartPrice = productAuctionsContainer.querySelector('#detail-start-price');
+    const detailCurrentPrice = productAuctionsContainer.querySelector('#detail-current-price');
+    const detailBidAmountInput = productAuctionsContainer.querySelector('#bidAmountDetail');
+    const detailBidButton = productAuctionsContainer.querySelector('.bid-btn-detail');
+
+    // Modal elements
+    const bidModal = productAuctionsContainer.querySelector('#bid-modal');
+    const modalProductName = productAuctionsContainer.querySelector('#modal-product-name');
+    const modalCurrentBid = productAuctionsContainer.querySelector('#modal-current-bid');
+    const modalBidAmountInput = productAuctionsContainer.querySelector('#modal-bid-amount');
+    const modalProductIdInput = productAuctionsContainer.querySelector('#modal-product-id');
+    const modalCancelBtn = productAuctionsContainer.querySelector('#modal-cancel-btn');
+    const modalSubmitBidBtn = productAuctionsContainer.querySelector('#modal-submit-bid-btn');
+
+    // --- Event Listeners ---
+    if (auctionList) {
+        auctionList.addEventListener('click', function(event) {
+            // Handle "See More" clicks
+            const seeMoreButton = event.target.closest('.see-more-btn');
+            if (seeMoreButton) {
+                const productItem = seeMoreButton.closest('.product-item');
+                if (productItem) showProductDetail(productItem);
+                return; // Stop further processing if See More was clicked
+            }
+
+            // Handle "Bid Now" clicks (from list view)
+            const bidButton = event.target.closest('.bid-btn');
+            if (bidButton) {
+                const productItem = bidButton.closest('.product-item');
+                if (productItem) {
+                    const productId = productItem.dataset.productId;
+                    const productName = productItem.querySelector('.product-name').textContent;
+                    const currentBidText = productItem.querySelector('.product-price').textContent;
+                    // Extract number from current bid text (e.g., "$325" -> 325)
+                    const currentBid = parseFloat(currentBidText.replace(/[^0-9.]/g, ''));
+                    showBidPopup(productId, productName, currentBid);
+                }
+            }
+        });
+    }
+
+    if (backButton) {
+        backButton.addEventListener('click', showListView);
+    }
+
+    if (detailBidButton) {
+        detailBidButton.addEventListener('click', function() {
+            const amount = detailBidAmountInput.value;
+            const productName = detailName.textContent;
+            const currentBid = parseFloat(detailCurrentPrice.textContent.replace(/[^0-9.]/g, ''));
+
+            if (isValidBid(amount, currentBid)) {
+                alert(`Placing bid of $${amount} for ${productName}. (Implement actual bid submission)`);
+                detailBidAmountInput.value = ''; // Clear input
+                // Add actual bid submission logic here
+            } else {
+                alert(`Please enter a valid bid amount higher than the current bid ($${currentBid.toFixed(2)}).`);
+                detailBidAmountInput.focus();
+            }
+        });
+    }
+
+    // Modal Button Listeners
+    if (modalCancelBtn) {
+        modalCancelBtn.addEventListener('click', hideBidPopup);
+    }
+
+    if (modalSubmitBidBtn) {
+        modalSubmitBidBtn.addEventListener('click', function() {
+            const productId = modalProductIdInput.value;
+            const productName = modalProductName.textContent;
+            const amount = modalBidAmountInput.value;
+            const currentBid = parseFloat(modalCurrentBid.textContent.replace(/[^0-9.]/g, ''));
+
+            if (isValidBid(amount, currentBid)) {
+                alert(`Submitting bid of $${amount} for Product ID: ${productId} (${productName}). (Implement actual bid submission)`);
+                // Add actual fetch/submission logic here
+                hideBidPopup(); // Close modal on successful mock submission
+            } else {
+                 alert(`Please enter a valid bid amount higher than the current bid ($${currentBid.toFixed(2)}).`);
+                 modalBidAmountInput.focus();
+            }
+        });
+    }
+
+    // Optional: Close modal if clicking outside the modal content
+    if (bidModal) {
+        bidModal.addEventListener('click', function(event) {
+            // Check if the click is directly on the backdrop (the modal container itself)
+            if (event.target === bidModal) {
+                hideBidPopup();
+            }
+        });
+    }
+
+
+    // --- Functions ---
+    function showProductDetail(productItemElement) {
+        const details = productItemElement.querySelector('.product-details');
+        const name = productItemElement.querySelector('.product-name').textContent;
+        const currentPriceText = productItemElement.querySelector('.product-price').textContent;
+        const largeImage = details.querySelector('.product-image-large').textContent;
+        const description = details.querySelector('.product-description').textContent;
+        const usedTime = details.querySelector('.product-used-time').textContent;
+        const startPrice = details.querySelector('.product-start-price').textContent;
+
+        if(detailImg) { detailImg.src = largeImage; detailImg.alt = name; }
+        if(detailName) detailName.textContent = name;
+        if(detailDescription) detailDescription.textContent = description;
+        if(detailUsedTime) detailUsedTime.textContent = usedTime;
+        if(detailStartPrice) detailStartPrice.textContent = `$${startPrice}`; // Add $ sign
+        if(detailCurrentPrice) detailCurrentPrice.textContent = currentPriceText; // Use text directly
+
+        if(detailBidAmountInput) detailBidAmountInput.value = '';
+
+        if (listView) listView.classList.add('hidden');
+        if (detailView) { detailView.classList.remove('hidden'); detailView.classList.add('flex'); }
+    }
+
+    function showListView() {
+         if (detailView) { detailView.classList.add('hidden'); detailView.classList.remove('flex'); }
+         if (listView) listView.classList.remove('hidden');
+    }
+
+    function showBidPopup(productId, productName, currentBid) {
+        if (!bidModal) return; // Exit if modal element not found
+
+        // Populate modal
+        if(modalProductName) modalProductName.textContent = productName;
+        if(modalCurrentBid) modalCurrentBid.textContent = `$${currentBid.toFixed(2)}`; // Format currency
+        if(modalProductIdInput) modalProductIdInput.value = productId;
+        if(modalBidAmountInput) {
+            modalBidAmountInput.value = ''; // Clear previous input
+            // Set placeholder dynamically based on current bid
+            modalBidAmountInput.placeholder = `Enter > $${currentBid.toFixed(2)}`;
+            // Optionally set min value (though client-side validation isn't foolproof)
+            modalBidAmountInput.min = (currentBid + 0.01).toFixed(2);
+        }
+
+
+        // Show modal with transition
+        bidModal.classList.remove('hidden');
+        // Use setTimeout to allow the display change to register before starting opacity transition
+        setTimeout(() => {
+             bidModal.classList.remove('opacity-0');
+        }, 10); // Small delay
+
+        if(modalBidAmountInput) modalBidAmountInput.focus(); // Focus the input field
+    }
+
+    function hideBidPopup() {
+        if (!bidModal) return;
+         // Start fade out transition
+         bidModal.classList.add('opacity-0');
+         // Wait for transition to finish before hiding
+         setTimeout(() => {
+             bidModal.classList.add('hidden');
+         }, 300); // Match transition duration (duration-300)
+    }
+
+    // Helper function for bid validation
+    function isValidBid(amountStr, currentBid) {
+         if (!amountStr) return false; // Check if empty
+         const amount = parseFloat(amountStr);
+         // Check if it's a number and greater than the current bid
+         return !isNaN(amount) && amount > currentBid;
+    }
+
+})();
+</script>
