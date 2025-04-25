@@ -1,0 +1,69 @@
+<div>
+    <h2 class="text-2xl font-semibold mb-6">Welcome, <span id="home-username">User</span>!</h2> <div class="stats-cards grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="stats-card text-center">
+            <h3 class="text-lg font-semibold mb-2">Your Active Bids</h3>
+            <p class="text-4xl font-bold">3</p>
+        </div>
+        <div class="stats-card text-center">
+            <h3 class="text-lg font-semibold mb-2">Items You're Selling</h3>
+             <p class="text-4xl font-bold">5</p>
+        </div>
+        <div class="stats-card text-center">
+            <h3 class="text-lg font-semibold mb-2">Recent Earnings</h3>
+             <p class="text-4xl font-bold">$155.00</p>
+        </div>
+    </div>
+
+    <div class="auctions-table">
+        <h3 class="text-xl font-semibold mb-4">Featured Auctions</h3>
+        <div class="overflow-x-auto auctions-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Current Bid</th>
+                        <th>Bids</th>
+                        <th>Ends In</th>
+                    </tr>
+                </thead>
+                <tbody>
+                     <tr>
+                        <td>Smartphone X</td>
+                        <td>$320</td>
+                        <td>18</td>
+                        <td>2 days</td>
+                    </tr>
+                    <tr>
+                        <td>Vintage Watch</td>
+                        <td>$280</td>
+                        <td>11</td>
+                        <td>1 day</td>
+                    </tr>
+                    <tr>
+                        <td>Antique Vase</td>
+                        <td>$150</td>
+                        <td>25</td>
+                        <td>3 days</td>
+                    </tr>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        // Optional: Add any JavaScript specific to the home section here
+        // For example, functions to fetch and update the stats or auction list.
+        // You could also fetch the actual username and update the #home-username span
+        // console.log("Home content loaded.");
+
+        // Example: Function to update username (call this after fetching user data)
+        function updateWelcomeMessage(username) {
+            const usernameSpan = document.getElementById('home-username');
+            if (usernameSpan && username) {
+                usernameSpan.textContent = username;
+            }
+        }
+        // Example usage (replace 'ActualUserName' with fetched data)
+        // updateWelcomeMessage('ActualUserName');
+
+    </script>
+</div>

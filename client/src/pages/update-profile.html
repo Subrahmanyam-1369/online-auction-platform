@@ -1,0 +1,36 @@
+<div>
+    <form class="space-y-4 glassmorphic p-6 rounded-lg">
+        <h3 class="text-xl font-semibold mb-4">Update Your Profile Information</h3>
+        <div>
+            <label for="updateFullName" class="block text-sm font-medium text-gray-200 mb-1">Full Name</label>
+            <input type="text" id="updateFullName" name="updateFullName" placeholder="Your current name"
+                   class="w-full px-4 py-2 bg-transparent border border-gray-400 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+        </div>
+        <div>
+            <label for="updateEmail" class="block text-sm font-medium text-gray-200 mb-1">Email Address</label>
+            <input type="email" id="updateEmail" name="updateEmail" placeholder="your.email@example.com" disabled
+                   class="w-full px-4 py-2 bg-gray-700 border border-gray-500 rounded-lg text-gray-300 cursor-not-allowed">
+             <p class="text-xs text-gray-400 mt-1">Email cannot be changed.</p>
+        </div>
+        <div>
+            <label for="updatePassword" class="block text-sm font-medium text-gray-200 mb-1">New Password (Optional)</label>
+            <input type="password" id="updatePassword" name="updatePassword" placeholder="Leave blank to keep current password"
+                   class="w-full px-4 py-2 bg-transparent border border-gray-400 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+        </div>
+        <div>
+            <label for="confirmUpdatePassword" class="block text-sm font-medium text-gray-200 mb-1">Confirm New Password</label>
+            <input type="password" id="confirmUpdatePassword" name="confirmUpdatePassword" placeholder="Confirm new password if changed"
+                   class="w-full px-4 py-2 bg-transparent border border-gray-400 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+        </div>
+        <div>
+            <button type="submit"
+                    class="w-full md:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300">
+                Save Changes
+            </button>
+        </div>
+    </form>
+    <script>
+      // Add script here to handle form submission, validation, and API call
+      // e.g., document.querySelector('form').addEventListener('submit', ...)
+    </script>
+</div>
