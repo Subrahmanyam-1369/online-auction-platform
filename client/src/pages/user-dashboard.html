@@ -174,6 +174,7 @@
     <div class="dashboard-container">
         <div class="sidebar">
             <h1 class="text-xl font-bold mb-4 text-center flex-shrink-0">USER DASHBOARD</h1>
+            <h2 id="welcomeUser" class="text-3xl font-bold mb-6">Welcome, User!</h2>
 
             <a data-content-id="home" class="active">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -370,14 +371,37 @@
         });
 
          // Initial content load when the page is ready
-         document.addEventListener('DOMContentLoaded', () => {
+         document.addEventListener('DOMContentLoaded', function() {
              // Find the link marked as active initially (should be the dynamic 'home' link)
              const initialActiveLink = document.querySelector('.sidebar a.active[data-content-id]');
              const initialContentId = initialActiveLink ? initialActiveLink.getAttribute('data-content-id') : 'home'; // Default to home if none active
              // Load the initial dynamic content
              loadContent(initialContentId);
-         });
 
+             // Personalized welcome message using localStorage user info, fallback to API if missing
+             let user = null;
+             try {
+                 user = JSON.parse(localStorage.getItem('user'));
+             } catch (e) { user = null; }
+             const welcomeElem = document.getElementById('welcomeUser');
+             if (user && user.full_name) {
+                 welcomeElem.textContent = 'Welcome, ' + user.full_name + '!';
+             } else if (user && user.user_id) {
+                 // Fallback: fetch user details from backend if full_name missing
+                 fetch('http://localhost:5000/api/user/' + user.user_id)
+                   .then(res => res.json())
+                   .then(data => {
+                       if (data.success && data.user && data.user.full_name) {
+                           welcomeElem.textContent = 'Welcome, ' + data.user.full_name + '!';
+                           // Optionally update localStorage
+                           user.full_name = data.user.full_name;
+                           localStorage.setItem('user', JSON.stringify(user));
+                       }
+                   });
+             } else {
+                 welcomeElem.textContent = 'Welcome!';
+             }
+         });
     </script>
 </body>
 </html>

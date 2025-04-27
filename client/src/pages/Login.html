@@ -79,70 +79,38 @@
     <script>
         // Add event listener to the form for the submit event
         document.getElementById('loginForm').addEventListener('submit', function (e) {
-            // Prevent the default form submission behavior
             e.preventDefault();
 
-            // Get values from the form fields
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Prepare the data to be sent to the backend
             const loginData = {
                 email: email,
                 password: password
             };
 
-            // --- Mock API Call Placeholder ---
-            // In a real application, you would send this data to your backend login API endpoint
-            console.log('Logging in with:', loginData);
-            // Example using fetch API (replace with your actual API endpoint and logic)
-            /*
-            fetch('/api/login', { // Replace with your actual login API endpoint
+            fetch('http://localhost:5000/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(loginData),
             })
-            .then(response => {
-                if (!response.ok) {
-                    // Handle errors (e.g., invalid credentials)
-                    return response.json().then(err => { throw new Error(err.message || 'Login failed') });
+            .then(response => response.json().then(data => ({ status: response.status, body: data })))
+            .then(({ status, body }) => {
+                if (status === 200 && body.success) {
+                    // Store user info in localStorage for dashboard personalization
+                    localStorage.setItem('user', JSON.stringify(body.user));
+                    alert('Login successful!');
+                    window.location.href = './user-dashboard.html';
+                } else {
+                    alert('Login failed: ' + (body.message || 'Unknown error'));
                 }
-                return response.json(); // Assuming backend sends back a token and user info
-            })
-            .then(data => {
-                console.log('Login successful:', data);
-                alert('Login successful!');
-
-                // --- Handle successful login ---
-                // 1. Store authentication token (e.g., JWT) in localStorage or sessionStorage
-                // localStorage.setItem('authToken', data.token);
-                // localStorage.setItem('userRole', data.user.role); // Store user role if needed
-
-                // 2. Redirect to the appropriate dashboard based on role
-                // if (data.user.role === 'Admin') {
-                //    window.location.href = '/pages/admin-dashboard.html';
-                // } else {
-                //    window.location.href = '/pages/user-dashboard.html';
-                // }
-                // For now, just resetting the form
-                this.reset();
             })
             .catch((error) => {
                 console.error('Login error:', error);
-                alert('Login failed: ' + error.message); // Show error message to the user
+                alert('Login failed: ' + error.message);
             });
-            */
-
-            // Using alert for mock feedback
-            alert('Login attempt successful! (Mock response - check console for data)');
-            // In a real app, redirect based on backend response (see commented fetch example)
-            // For mock purposes, maybe redirect to user dashboard:
-            // window.location.href = './user-dashboard.html';
-
-            // Reset the form fields after mock submission attempt
-            this.reset();
         });
     </script>
 </body>
