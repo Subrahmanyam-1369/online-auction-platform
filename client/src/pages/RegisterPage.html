@@ -95,69 +95,45 @@
     </div>
 
     <script>
-        // Add event listener to the form for the submit event
         document.getElementById('registerForm').addEventListener('submit', function (e) {
-            // Prevent the default form submission behavior (which would cause a page reload)
             e.preventDefault();
 
-            // Get values from the form fields
             const fullName = document.getElementById('fullName').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Basic client-side validation: check if passwords match
             if (password !== confirmPassword) {
-                // Use a more user-friendly notification method in a real app
                 alert('Passwords do not match!');
-                return; // Stop the function execution if passwords don't match
+                return;
             }
 
-            // Prepare the data to be sent to the backend
             const registrationData = {
-                fullName: fullName,
+                full_name: fullName, // must match backend
                 email: email,
-                password: password // Send the plain password (HTTPS is crucial)
-                // The backend should hash this password before storing
+                password: password
             };
 
-            // --- Mock API Call Placeholder ---
-            // In a real application, you would send this data to your backend API endpoint
-            console.log('Registering:', registrationData);
-            // Example using fetch API (replace with your actual API endpoint and logic)
-            /*
-            fetch('/api/register', { // Replace with your actual registration API endpoint
+            fetch('http://localhost:5000/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(registrationData),
             })
-            .then(response => {
-                if (!response.ok) {
-                    // Handle errors (e.g., email already exists)
-                    return response.json().then(err => { throw new Error(err.message || 'Registration failed') });
+            .then(response => response.json().then(data => ({ status: response.status, body: data })))
+            .then(({ status, body }) => {
+                if (status === 201 && body.success) {
+                    alert('Registration successful! Please log in.');
+                    window.location.href = './Login.html';
+                } else {
+                    alert('Registration failed: ' + (body.message || 'Unknown error'));
                 }
-                return response.json(); // Assuming backend sends back user info or success message
-            })
-            .then(data => {
-                console.log('Registration successful:', data);
-                alert('Registration successful!');
-                // Optionally redirect to login page or dashboard
-                window.location.href = './Login.html'; // Redirect after successful registration
-                // this.reset(); // Clear the form fields
             })
             .catch((error) => {
                 console.error('Registration error:', error);
                 alert('Registration failed: ' + error.message);
             });
-            */
-
-            // Using alert for mock feedback
-            alert('Registration successful! (Mock response - check console for data)');
-
-            // Reset the form fields after mock submission
-            this.reset();
         });
     </script>
 </body>
